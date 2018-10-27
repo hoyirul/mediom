@@ -15,13 +15,38 @@ curl_setopt($ch, CURLOPT_POSTFIELDS,
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $server_output = curl_exec($ch);
-
 curl_close ($ch);
-echo $server_output;
+$server_output = json_decode($server_output, TRUE);
 
-// header("location:index.php");
+echo "<pre>";
+print_r($server_output);
+echo "</pre>";
 
-// echo $server_output;
-// Further processing ...
 
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<br />
+<div class="container">
+<form action="input.php" method="post">
+  <input type="hidden" name="token_type" value="<?= $server_output['token_type']; ?>">
+  <input type="hidden" name="access_token" value="<?= $server_output['access_token']; ?>">
+  <input type="hidden" name="refresh_token" value="<?= $server_output['refresh_token']; ?>">
+  <input type="hidden" name="expires_at" value="<?= $server_output['expires_at']; ?>">
+  <input type="hidden" name="code" value="<?= $_SESSION['code']; ?>">
+  <button type="submit" name="btn-lanjut" class="btn btn-primary pull-center">Lanjut</button>
+</form>
+</div>
+</body>
+</html>
